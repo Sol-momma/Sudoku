@@ -10,13 +10,16 @@
 
 <body>
     <main>
-        <h1>Sudoku</h1>
-        <a href="https://bubudoufu.com/webapp/">Back to HOME</a>
+        <div class="header-container">
+            <h1>Sudoku</h1>
+            <button id="theme-toggle">🌓</button>
+        </div>
+        <button class="reset-btn" onclick="resetGame()">Reset Game</button>
         <table class="main"></table>
         <table class="select"></table>
         <div class="box">
-            <div class="check" onclick="check()">Check Answer</div>
-            <div class="remove" onclick="remove()">Remove</div>
+            <button class="check" onclick="check()">Check Answer</button>
+            <button class="remove" onclick="remove()">Remove</button>
         </div>
         <h2></h2>
     </main>

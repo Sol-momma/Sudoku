@@ -1,3 +1,25 @@
+// ファイルの先頭に追加
+function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+    
+    // テーマの設定を保存
+    const isDarkMode = body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+}
+
+// ページ読み込み時に保存されたテーマを適用
+document.addEventListener('DOMContentLoaded', () => {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
+    
+    // テーマトグルボタンのイベントリスナーを設定
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', toggleTheme);
+});
+
 // 問題
 const question = [
   [8, 7, 1, 0, 0, 0, 5, 6, 4],
@@ -100,4 +122,26 @@ function check() {
 //消す処理
 function remove() {
   place.textContent = null;
+}
+
+// リセット機能を追加
+function resetGame() {
+    // メインテーブルの全セルを初期状態に戻す
+    const mainTable = document.querySelector(".main");
+    const cells = mainTable.querySelectorAll("td");
+    cells.forEach(cell => {
+        if (!cell.classList.contains("clickdisable")) {
+            cell.textContent = "";
+        }
+    });
+    
+    // 選択されたセルをリセット
+    if (place) {
+        place.classList.remove("mainClick");
+        place = undefined;
+    }
+    
+    // 結果メッセージをクリア
+    const h2 = document.querySelector("h2");
+    h2.textContent = "";
 }
