@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 問題
-const question = [
+let question = [
   [8, 7, 1, 0, 0, 0, 5, 6, 4],
   [0, 9, 5, 0, 1, 7, 2, 3, 8],
   [2, 0, 3, 4, 5, 8, 0, 7, 1],
@@ -37,7 +37,7 @@ const question = [
 let place;
 
 init();
-// ゲーム画面生成
+// ゲーム面���成
 function init() {
   const main = document.querySelector(".main");
   const select = document.querySelector(".select");
@@ -144,4 +144,149 @@ function resetGame() {
     // 結果メッセージをクリア
     const h2 = document.querySelector("h2");
     h2.textContent = "";
+}
+
+// 数独パズル生成のためのユーティリティ関数
+function invalidNumbers(sudoku, x, y) {
+    const size = sudoku.length;
+    const block = Math.sqrt(size);
+    const bx = x - (x % block);
+    const by = y - (y % block);
+
+    const invalid = new Set();
+
+    // 同じ行の数値
+    for (let i = 0; i < size; i++) {
+        invalid.add(sudoku[y][i]);
+    }
+
+    // 同じ列の数値
+    for (let i = 0; i < size; i++) {
+        invalid.add(sudoku[i][x]);
+    }
+
+    // ブロック内の数値
+    for (let i = by; i < by + block; i++) {
+        for (let j = bx; j < bx + block; j++) {
+            invalid.add(sudoku[i][j]);
+        }
+    }
+
+    return invalid;
+}
+
+function validNumbers(sudoku, x, y) {
+    const size = sudoku.length;
+    const allNumbers = new Set(Array.from({ length: size }, (_, i) => i + 1));
+    const invalid = invalidNumbers(sudoku, x, y);
+    return new Set([...allNumbers].filter(num => !invalid.has(num)));
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// 新しい数独パズルを生成する関数
+function generateNewPuzzle() {
+    const size = 9;
+    const puzzle = Array(size).fill().map(() => Array(size).fill(0));
+    
+    // 最初の行をランダムに生成
+    puzzle[0] = shuffle(Array.from({ length: size }, (_, i) => i + 1));
+    
+    // バックトラッキングで残りを埋める
+    if (solveSudoku(puzzle)) {
+        // ランダムにいくつかのマスを空白にする
+        const difficulty = 40; // 空白マスの数（調整可能）
+        let count = 0;
+        while (count < difficulty) {
+            const x = Math.floor(Math.random() * size);
+            const y = Math.floor(Math.random() * size);
+            if (puzzle[y][x] !== 0) {
+                puzzle[y][x] = 0;
+                count++;
+            }
+        }
+        return puzzle;
+    }
+    return null;
+}
+
+function solveSudoku(puzzle) {
+    const size = puzzle.length;
+    let row = -1;
+    let col = -1;
+    let isEmpty = false;
+    
+    // 空のマスを探す
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            if (puzzle[i][j] === 0) {
+                row = i;
+                col = j;
+                isEmpty = true;
+                break;
+            }
+        }
+        if (isEmpty) break;
+    }
+    
+    // すべてのマスが埋まっていれば完了
+    if (!isEmpty) return true;
+    
+    // 使用可能な数字を試す
+    const valid = Array.from(validNumbers(puzzle, col, row));
+    shuffle(valid); // ランダム性を追加
+    
+    for (const num of valid) {
+        puzzle[row][col] = num;
+        if (solveSudoku(puzzle)) {
+            return true;
+        }
+        puzzle[row][col] = 0;
+    }
+    
+    return false;
+}
+
+// 新しいパズル生成ボタンのイベントハンドラ
+function newPuzzle() {
+    const newQuestion = generateNewPuzzle();
+    if (newQuestion) {
+        // グローバルの問題配列を更新
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                question[i][j] = newQuestion[i][j];
+            }
+        }
+        
+        // 既存の盤面をクリア
+        const main = document.querySelector(".main");
+        while (main.firstChild) {
+            main.removeChild(main.firstChild);
+        }
+        
+        // 数字選択パネルをクリア
+        const select = document.querySelector(".select");
+        while (select.firstChild) {
+            select.removeChild(select.firstChild);
+        }
+        
+        // 選択状態をリセット
+        if (place) {
+            place.classList.remove("mainClick");
+            place = undefined;
+        }
+        
+        // 新しい盤面を生成
+        init();
+        
+        // 結果メッセージをクリア
+        const h2 = document.querySelector("h2");
+        h2.textContent = "";
+    }
 }

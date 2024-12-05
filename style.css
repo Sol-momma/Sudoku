@@ -255,3 +255,14 @@ a:hover {
     transform: translateY(-2px);
     box-shadow: var(--neon-shadow);
 }
+
+.button-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.button-container .reset-btn {
+    margin-bottom: 0;
+}
