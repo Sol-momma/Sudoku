@@ -1,6 +1,6 @@
 # Sudoku Game - Multi-Feature Sudoku Project
 
-![Sudoku Game](https://sudoku-ruddy-psi.vercel.app/)
+![Sudoku Game]([https://sudoku-ruddy-psi.vercel.app/])
 
 ## **Game Overview**
 A multi-feature Sudoku game that combines standard Sudoku functionality with customization, learning modes, and community features.
