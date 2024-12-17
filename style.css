@@ -145,6 +145,22 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* (Han-Yu) dark mode bottom*/
+body.dark-mode .remove, 
+body.dark-mode .check, 
+body.dark-mode #theme-toggle {
+    color: #ffffff;
+    border-color: var(--accent-color);
+    background: transparent;
+}
+
+body.dark-mode .remove:hover, 
+body.dark-mode .check:hover {
+    background: var(--accent-color);
+    color: var(--background-color);
+}
+/* (by Han-Yu) */
+
 .header-container {
     display: flex;
     align-items: center;
@@ -267,7 +283,15 @@ a:hover {
     margin-bottom: 0;
 }
 
-table.main {
-    margin: 0 auto;
+/* (Han-Yu) Timer style */
+#timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
 }
-
+/* (by Han-Yu) */

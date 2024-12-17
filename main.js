@@ -1,3 +1,4 @@
+// ファイルの先頭に追加
 function toggleTheme() {
     const body = document.body;
     body.classList.toggle('dark-mode');
@@ -35,11 +36,25 @@ let question = [
 // クリックされた要素を保持
 let place;
 
+// (Han-Yu) timer variables
+let timer;
+let seconds = 0;
+// (by Han-Yu)
+
 init();
 // ゲーム面���成
 function init() {
   const main = document.querySelector(".main");
   const select = document.querySelector(".select");
+
+  // (Han-Yu) 清空現有內容
+  main.innerHTML = "";
+  select.innerHTML = "";
+  // (by Han-Yu)
+
+  // (Han-Yu) Start the timer
+  startTimer();
+  // (by Han-Yu)
   
   for (let i = 0; i < 9; i++) {
     let tr = document.createElement("tr");
@@ -68,24 +83,23 @@ function init() {
 }
 
 // 問題パネルのマスが押された時の処理
-function mainClick(e) {
+function mainClick(e) { 
     // 以前の選択を解除
-    if (place != undefined) {
-        place.classList.remove("mainClick");
-        const previousRow = place.parentElement;
-        const previousColIndex = Array.from(previousRow.children).indexOf(place);
-        
-        // 行と列のハイライトを解除
-        previousRow.querySelectorAll("td").forEach(td => td.classList.remove("highlight"));
-        const allRows = document.querySelectorAll(".main tr");
-        allRows.forEach(row => {
-            row.children[previousColIndex].classList.remove("highlight");
-        });
-    }
+  if (place != undefined) {
+    place.classList.remove("mainClick");
+    const previousRow = place.parentElement;
+    const previousColIndex = Array.from(previousRow.children).indexOf(place);
+    
+    // 行と列のハイライトを解除
+    previousRow.querySelectorAll("td").forEach(td => td.classList.remove("highlight"));
+    const allRows = document.querySelectorAll(".main tr");
+    allRows.forEach(row => {
+        row.children[previousColIndex].classList.remove("highlight");
+    });
+  }
 
-    // 新しい選択を設定
-    place = e.target;
-    place.classList.add("mainClick");
+  place = e.target;
+  place.classList.add("mainClick");
 
     // 行と列をハイライト
     const currentRow = place.parentElement;
@@ -100,7 +114,8 @@ function mainClick(e) {
 
 // 数字選択のマスが押された時の処理
 function selectClick(e) {
-    const selectedNumber = e.target.value;
+  place.textContent = e.target.value;
+  const selectedNumber = e.target.value;
     place.textContent = selectedNumber;
 
     // すべてのセルをリセット
@@ -148,6 +163,9 @@ function check() {
   }
   if (checkFlag) {
     h2.textContent = "Ding ding ding! Correct!";
+    // (Han-Yu) Stop the timer
+    stopTimer();
+    // (by Han-Yu)
   } else {
     h2.textContent = "Nope that's wrong!";
   }
@@ -168,6 +186,11 @@ function resetGame() {
             cell.textContent = "";
         }
     });
+
+    // (Han-Yu) Reset the timer
+    resetTimer();
+    init();
+    // (by Han-Yu)
     
     // 選択されたセルをリセット
     if (place) {
@@ -297,6 +320,10 @@ function newPuzzle() {
                 question[i][j] = newQuestion[i][j];
             }
         }
+
+        // (Han-Yu) Reset Timer
+        resetTimer();
+        // (by Han-Yu)
         
         // 既存の盤面をクリア
         const main = document.querySelector(".main");
@@ -315,7 +342,7 @@ function newPuzzle() {
             place.classList.remove("mainClick");
             place = undefined;
         }
-        
+
         // 新しい盤面を生成
         init();
         
@@ -324,3 +351,35 @@ function newPuzzle() {
         h2.textContent = "";
     }
 }
+
+// (Han-Yu) add the timer function
+
+function startTimer() {
+  const timerDisplay = document.getElementById('timer');
+  seconds = 0;
+  if (timer) clearInterval(timer);
+
+  timer = setInterval(function () {
+    seconds++;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(secs).padStart(2, '0');
+
+    timerDisplay.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timer);
+}
+
+function resetTimer() {
+  stopTimer();
+  seconds = 0;
+  document.getElementById('timer').textContent = "00:00:00";
+}
+// (by Han-Yu)
