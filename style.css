@@ -266,3 +266,8 @@ a:hover {
 .button-container .reset-btn {
     margin-bottom: 0;
 }
+
+table.main {
+    margin: 0 auto;
+}
+

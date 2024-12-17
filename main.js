@@ -1,4 +1,3 @@
-// ファイルの先頭に追加
 function toggleTheme() {
     const body = document.body;
     body.classList.toggle('dark-mode');
@@ -70,17 +69,52 @@ function init() {
 
 // 問題パネルのマスが押された時の処理
 function mainClick(e) {
-  if (place != undefined) {
-    place.classList.remove("mainClick");
-  }
+    // 以前の選択を解除
+    if (place != undefined) {
+        place.classList.remove("mainClick");
+        const previousRow = place.parentElement;
+        const previousColIndex = Array.from(previousRow.children).indexOf(place);
+        
+        // 行と列のハイライトを解除
+        previousRow.querySelectorAll("td").forEach(td => td.classList.remove("highlight"));
+        const allRows = document.querySelectorAll(".main tr");
+        allRows.forEach(row => {
+            row.children[previousColIndex].classList.remove("highlight");
+        });
+    }
 
-  place = e.target;
-  place.classList.add("mainClick");
+    // 新しい選択を設定
+    place = e.target;
+    place.classList.add("mainClick");
+
+    // 行と列をハイライト
+    const currentRow = place.parentElement;
+    const currentColIndex = Array.from(currentRow.children).indexOf(place);
+    
+    currentRow.querySelectorAll("td").forEach(td => td.classList.add("highlight"));
+    const allRows = document.querySelectorAll(".main tr");
+    allRows.forEach(row => {
+        row.children[currentColIndex].classList.add("highlight");
+    });
 }
 
 // 数字選択のマスが押された時の処理
 function selectClick(e) {
-  place.textContent = e.target.value;
+    const selectedNumber = e.target.value;
+    place.textContent = selectedNumber;
+
+    // すべてのセルをリセット
+    const allCells = document.querySelectorAll(".main td");
+    allCells.forEach(cell => {
+        cell.classList.remove("highlight");
+    });
+
+    // 同じ数字を持つセルをハイライト
+    allCells.forEach(cell => {
+        if (cell.textContent === selectedNumber) {
+            cell.classList.add("highlight");
+        }
+    });
 }
 
 // 正解判定
@@ -113,9 +147,9 @@ function check() {
     }
   }
   if (checkFlag) {
-    h2.textContent = "正解です!!";
+    h2.textContent = "Ding ding ding! Correct!";
   } else {
-    h2.textContent = "間違いがあります";
+    h2.textContent = "Nope that's wrong!";
   }
 }
 
