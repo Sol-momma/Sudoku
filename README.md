@@ -1,6 +1,6 @@
 # Sudoku Game - Multi-Feature Sudoku Project
 
-![Sudoku Game](https://sudoku.com/jp/jokyu/)
+<img width="556" alt="スクリーンショット 2024-12-17 15 55 53" src="https://github.com/user-attachments/assets/f897e2bc-1e9b-4c2c-a480-f0bbc9436a42" />
 
 ## **Game Overview**
 A multi-feature Sudoku game that combines standard Sudoku functionality with customization, learning modes, and community features.
@@ -49,13 +49,6 @@ A multi-feature Sudoku game that combines standard Sudoku functionality with cus
 
 ### 8. **Multi-Platform Compatibility**
 - A responsive design that seamlessly works on smartphones, tablets, and PCs
-
-## **Screenshots**
-### Dark Mode
-![Dark Mode](file-GwoKZaBk3MZSrchXG4w5Tw)
-
-### Light Mode
-![Light Mode](file-YRJF9DhEc2kmxSSbQHj3t5)
 
 ## **GitHub**
 [GitHub Repository](https://github.com/Sol-momma/Sudoku)
