@@ -21,6 +21,8 @@ table{
 }
 .main{
   overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
 }
 .main tr:hover{
     background-color: #f3ece3;
@@ -70,7 +72,7 @@ table{
     gap: 20px;
 }
 .select{
-    margin: 2rem 0;
+    margin: 2rem auto;
 }
 .select td{
     border: 2px solid var(--accent-color);
